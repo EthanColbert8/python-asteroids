@@ -38,7 +38,7 @@ def main():
         for ast in asteroids:
             for shot in shots:
                 if ast.colliding(shot):
-                    ast.kill()
+                    ast.split()
                     shot.kill()
 
         # drawable.draw(screen) # this crashes because we don't have images for the sprites
@@ -49,7 +49,6 @@ def main():
             if ast.colliding(player):
                 print("Game over!")
                 return
-
 
         pygame.display.flip()
         dt = clock.tick(60) / 1000.0
