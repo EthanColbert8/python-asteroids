@@ -1,6 +1,8 @@
 import pygame
 from constants import * # this is a small project, so just make importing constants easy
 from player import Player
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
 
 def main():
     pygame.init()
@@ -9,7 +11,17 @@ def main():
     clock = pygame.time.Clock()
     dt = 0.0
 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable) # sets the containers at the class level
     player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+
+    Asteroid.containers = (asteroids, updatable, drawable)
+
+    AsteroidField.containers = (updatable,)
+    asteroid_field = AsteroidField()
 
     while True:
         for event in pygame.event.get():
@@ -18,7 +30,11 @@ def main():
         
         screen.fill((0, 0, 0)) # RGB black
 
-        player.draw(screen)
+        updatable.update(dt)
+        
+        #drawable.draw(screen)
+        for to_draw in drawable:
+            to_draw.draw(screen)
 
         pygame.display.flip()
         dt = clock.tick(60) / 1000.0
